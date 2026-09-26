@@ -1,0 +1,852 @@
+[
+  {
+    "case": "system-busy-1",
+    "mode": "system",
+    "workload": "busy",
+    "mixed": false,
+    "record_exit": 0,
+    "decode_exit": 0,
+    "total_samples": 157682,
+    "per_cpu": {
+      "0": 20108,
+      "1": 21671,
+      "6": 17926,
+      "7": 17486,
+      "8": 18158,
+      "9": 18366,
+      "10": 21732,
+      "11": 22235
+    },
+    "unexpected_cpus": {},
+    "idle_delta": {
+      "0": {
+        "state1": 8,
+        "state2": 27,
+        "state0": 46
+      },
+      "1": {
+        "state1": 2,
+        "state2": 4,
+        "state0": 76
+      },
+      "6": {
+        "state1": 3,
+        "state2": 11,
+        "state0": 43
+      },
+      "7": {
+        "state1": 3,
+        "state2": 13,
+        "state0": 26
+      },
+      "8": {
+        "state1": 3,
+        "state2": 12,
+        "state0": 21
+      },
+      "9": {
+        "state1": 2,
+        "state2": 12,
+        "state0": 29
+      },
+      "10": {
+        "state1": 4,
+        "state2": 12,
+        "state0": 19
+      },
+      "11": {
+        "state1": 5,
+        "state2": 11,
+        "state0": 61
+      }
+    },
+    "command": [
+      "perf",
+      "record",
+      "-a",
+      "-C",
+      "0-1,6-11",
+      "-e",
+      "arm_spe_0/load_filter=1,store_filter=1,min_latency=0/u",
+      "-c",
+      "20000",
+      "-o",
+      "<workspace>/cpu-pm-multicore-20260926-150354/system-busy-1.data",
+      "--",
+      "taskset",
+      "-c",
+      "0-1,6-11",
+      "python3",
+      "<workspace>/spe-multicore-workload.py",
+      "busy"
+    ],
+    "trace_complete": [
+      "# entries-in-buffer/entries-written: 1079/1079   #P:12"
+    ]
+  },
+  {
+    "case": "task-busy-1",
+    "mode": "task",
+    "workload": "busy",
+    "mixed": false,
+    "record_exit": 0,
+    "decode_exit": 0,
+    "total_samples": 157878,
+    "per_cpu": {
+      "0": 20168,
+      "1": 21439,
+      "6": 17231,
+      "7": 19089,
+      "8": 18338,
+      "9": 18455,
+      "10": 22452,
+      "11": 20706
+    },
+    "unexpected_cpus": {},
+    "idle_delta": {
+      "0": {
+        "state1": 9,
+        "state2": 11,
+        "state0": 33
+      },
+      "1": {
+        "state1": 15,
+        "state2": 4,
+        "state0": 96
+      },
+      "6": {
+        "state1": 11,
+        "state2": 4,
+        "state0": 41
+      },
+      "7": {
+        "state1": 2,
+        "state2": 12,
+        "state0": 55
+      },
+      "8": {
+        "state1": 10,
+        "state2": 4,
+        "state0": 32
+      },
+      "9": {
+        "state1": 9,
+        "state2": 4,
+        "state0": 22
+      },
+      "10": {
+        "state1": 9,
+        "state2": 4,
+        "state0": 17
+      },
+      "11": {
+        "state1": 8,
+        "state2": 4,
+        "state0": 12
+      }
+    },
+    "command": [
+      "taskset",
+      "-c",
+      "0-1,6-11",
+      "perf",
+      "record",
+      "-e",
+      "arm_spe_0/load_filter=1,store_filter=1,min_latency=0/u",
+      "-c",
+      "20000",
+      "-o",
+      "<workspace>/cpu-pm-multicore-20260926-150354/task-busy-1.data",
+      "--",
+      "taskset",
+      "-c",
+      "0-1,6-11",
+      "python3",
+      "<workspace>/spe-multicore-workload.py",
+      "busy"
+    ],
+    "trace_complete": [
+      "# entries-in-buffer/entries-written: 1348/1348   #P:12"
+    ]
+  },
+  {
+    "case": "system-burst-1",
+    "mode": "system",
+    "workload": "burst",
+    "mixed": false,
+    "record_exit": 0,
+    "decode_exit": 0,
+    "total_samples": 79859,
+    "per_cpu": {
+      "0": 9932,
+      "1": 10426,
+      "6": 11463,
+      "7": 10240,
+      "8": 10029,
+      "9": 9362,
+      "10": 9170,
+      "11": 9237
+    },
+    "unexpected_cpus": {},
+    "idle_delta": {
+      "0": {
+        "state1": 29,
+        "state2": 108,
+        "state0": 558
+      },
+      "1": {
+        "state1": 20,
+        "state2": 110,
+        "state0": 65
+      },
+      "6": {
+        "state1": 27,
+        "state2": 70,
+        "state0": 69
+      },
+      "7": {
+        "state1": 24,
+        "state2": 69,
+        "state0": 36
+      },
+      "8": {
+        "state1": 20,
+        "state2": 70,
+        "state0": 64
+      },
+      "9": {
+        "state1": 22,
+        "state2": 70,
+        "state0": 41
+      },
+      "10": {
+        "state1": 15,
+        "state2": 63,
+        "state0": 104
+      },
+      "11": {
+        "state1": 13,
+        "state2": 72,
+        "state0": 60
+      }
+    },
+    "command": [
+      "perf",
+      "record",
+      "-a",
+      "-C",
+      "0-1,6-11",
+      "-e",
+      "arm_spe_0/load_filter=1,store_filter=1,min_latency=0/u",
+      "-c",
+      "20000",
+      "-o",
+      "<workspace>/cpu-pm-multicore-20260926-150354/system-burst-1.data",
+      "--",
+      "taskset",
+      "-c",
+      "0-1,6-11",
+      "python3",
+      "<workspace>/spe-multicore-workload.py",
+      "burst"
+    ],
+    "trace_complete": [
+      "# entries-in-buffer/entries-written: 6216/6216   #P:12"
+    ]
+  },
+  {
+    "case": "task-burst-1",
+    "mode": "task",
+    "workload": "burst",
+    "mixed": false,
+    "record_exit": 0,
+    "decode_exit": 0,
+    "total_samples": 82963,
+    "per_cpu": {
+      "0": 10086,
+      "1": 10187,
+      "6": 11790,
+      "7": 9598,
+      "8": 10375,
+      "9": 10628,
+      "10": 9886,
+      "11": 10413
+    },
+    "unexpected_cpus": {},
+    "idle_delta": {
+      "0": {
+        "state1": 56,
+        "state2": 241,
+        "state0": 204
+      },
+      "1": {
+        "state1": 27,
+        "state2": 91,
+        "state0": 281
+      },
+      "6": {
+        "state1": 20,
+        "state2": 79,
+        "state0": 39
+      },
+      "7": {
+        "state1": 13,
+        "state2": 47,
+        "state0": 270
+      },
+      "8": {
+        "state1": 18,
+        "state2": 71,
+        "state0": 26
+      },
+      "9": {
+        "state1": 26,
+        "state2": 70,
+        "state0": 10
+      },
+      "10": {
+        "state1": 33,
+        "state2": 65,
+        "state0": 41
+      },
+      "11": {
+        "state1": 22,
+        "state2": 68,
+        "state0": 60
+      }
+    },
+    "command": [
+      "taskset",
+      "-c",
+      "0-1,6-11",
+      "perf",
+      "record",
+      "-e",
+      "arm_spe_0/load_filter=1,store_filter=1,min_latency=0/u",
+      "-c",
+      "20000",
+      "-o",
+      "<workspace>/cpu-pm-multicore-20260926-150354/task-burst-1.data",
+      "--",
+      "taskset",
+      "-c",
+      "0-1,6-11",
+      "python3",
+      "<workspace>/spe-multicore-workload.py",
+      "burst"
+    ],
+    "trace_complete": [
+      "# entries-in-buffer/entries-written: 6568/6568   #P:12"
+    ]
+  },
+  {
+    "case": "system-busy-2",
+    "mode": "system",
+    "workload": "busy",
+    "mixed": false,
+    "record_exit": 0,
+    "decode_exit": 0,
+    "total_samples": 156686,
+    "per_cpu": {
+      "0": 20316,
+      "1": 20913,
+      "6": 18886,
+      "7": 18070,
+      "8": 18364,
+      "9": 17151,
+      "10": 22066,
+      "11": 20920
+    },
+    "unexpected_cpus": {},
+    "idle_delta": {
+      "0": {
+        "state1": 3,
+        "state2": 21,
+        "state0": 60
+      },
+      "1": {
+        "state1": 0,
+        "state2": 4,
+        "state0": 49
+      },
+      "6": {
+        "state1": 3,
+        "state2": 7,
+        "state0": 36
+      },
+      "7": {
+        "state1": 5,
+        "state2": 7,
+        "state0": 23
+      },
+      "8": {
+        "state1": 2,
+        "state2": 7,
+        "state0": 22
+      },
+      "9": {
+        "state1": 5,
+        "state2": 7,
+        "state0": 15
+      },
+      "10": {
+        "state1": 3,
+        "state2": 8,
+        "state0": 15
+      },
+      "11": {
+        "state1": 6,
+        "state2": 7,
+        "state0": 37
+      }
+    },
+    "command": [
+      "perf",
+      "record",
+      "-a",
+      "-C",
+      "0-1,6-11",
+      "-e",
+      "arm_spe_0/load_filter=1,store_filter=1,min_latency=0/u",
+      "-c",
+      "20000",
+      "-o",
+      "<workspace>/cpu-pm-multicore-20260926-150354/system-busy-2.data",
+      "--",
+      "taskset",
+      "-c",
+      "0-1,6-11",
+      "python3",
+      "<workspace>/spe-multicore-workload.py",
+      "busy"
+    ],
+    "trace_complete": [
+      "# entries-in-buffer/entries-written: 890/890   #P:12"
+    ]
+  },
+  {
+    "case": "task-busy-2",
+    "mode": "task",
+    "workload": "busy",
+    "mixed": false,
+    "record_exit": 0,
+    "decode_exit": 0,
+    "total_samples": 158225,
+    "per_cpu": {
+      "0": 19999,
+      "1": 21350,
+      "6": 18631,
+      "7": 17759,
+      "8": 18057,
+      "9": 18082,
+      "10": 22656,
+      "11": 21691
+    },
+    "unexpected_cpus": {},
+    "idle_delta": {
+      "0": {
+        "state1": 7,
+        "state2": 11,
+        "state0": 80
+      },
+      "1": {
+        "state1": 1,
+        "state2": 4,
+        "state0": 70
+      },
+      "6": {
+        "state1": 3,
+        "state2": 12,
+        "state0": 39
+      },
+      "7": {
+        "state1": 13,
+        "state2": 8,
+        "state0": 16
+      },
+      "8": {
+        "state1": 9,
+        "state2": 5,
+        "state0": 28
+      },
+      "9": {
+        "state1": 11,
+        "state2": 5,
+        "state0": 20
+      },
+      "10": {
+        "state1": 6,
+        "state2": 6,
+        "state0": 23
+      },
+      "11": {
+        "state1": 8,
+        "state2": 6,
+        "state0": 11
+      }
+    },
+    "command": [
+      "taskset",
+      "-c",
+      "0-1,6-11",
+      "perf",
+      "record",
+      "-e",
+      "arm_spe_0/load_filter=1,store_filter=1,min_latency=0/u",
+      "-c",
+      "20000",
+      "-o",
+      "<workspace>/cpu-pm-multicore-20260926-150354/task-busy-2.data",
+      "--",
+      "taskset",
+      "-c",
+      "0-1,6-11",
+      "python3",
+      "<workspace>/spe-multicore-workload.py",
+      "busy"
+    ],
+    "trace_complete": [
+      "# entries-in-buffer/entries-written: 1285/1285   #P:12"
+    ]
+  },
+  {
+    "case": "system-burst-2",
+    "mode": "system",
+    "workload": "burst",
+    "mixed": false,
+    "record_exit": 0,
+    "decode_exit": 0,
+    "total_samples": 77431,
+    "per_cpu": {
+      "0": 9456,
+      "1": 8750,
+      "6": 9688,
+      "7": 9981,
+      "8": 9231,
+      "9": 10258,
+      "10": 10427,
+      "11": 9640
+    },
+    "unexpected_cpus": {},
+    "idle_delta": {
+      "0": {
+        "state1": 53,
+        "state2": 178,
+        "state0": 73
+      },
+      "1": {
+        "state1": 16,
+        "state2": 58,
+        "state0": 343
+      },
+      "6": {
+        "state1": 13,
+        "state2": 70,
+        "state0": 40
+      },
+      "7": {
+        "state1": 17,
+        "state2": 55,
+        "state0": 108
+      },
+      "8": {
+        "state1": 18,
+        "state2": 66,
+        "state0": 58
+      },
+      "9": {
+        "state1": 19,
+        "state2": 63,
+        "state0": 58
+      },
+      "10": {
+        "state1": 16,
+        "state2": 66,
+        "state0": 72
+      },
+      "11": {
+        "state1": 18,
+        "state2": 65,
+        "state0": 63
+      }
+    },
+    "command": [
+      "perf",
+      "record",
+      "-a",
+      "-C",
+      "0-1,6-11",
+      "-e",
+      "arm_spe_0/load_filter=1,store_filter=1,min_latency=0/u",
+      "-c",
+      "20000",
+      "-o",
+      "<workspace>/cpu-pm-multicore-20260926-150354/system-burst-2.data",
+      "--",
+      "taskset",
+      "-c",
+      "0-1,6-11",
+      "python3",
+      "<workspace>/spe-multicore-workload.py",
+      "burst"
+    ],
+    "trace_complete": [
+      "# entries-in-buffer/entries-written: 5786/5786   #P:12"
+    ]
+  },
+  {
+    "case": "task-burst-2",
+    "mode": "task",
+    "workload": "burst",
+    "mixed": false,
+    "record_exit": 0,
+    "decode_exit": 0,
+    "total_samples": 75536,
+    "per_cpu": {
+      "0": 9528,
+      "1": 9246,
+      "6": 8053,
+      "7": 9141,
+      "8": 11383,
+      "9": 9417,
+      "10": 9139,
+      "11": 9629
+    },
+    "unexpected_cpus": {},
+    "idle_delta": {
+      "0": {
+        "state1": 49,
+        "state2": 166,
+        "state0": 126
+      },
+      "1": {
+        "state1": 13,
+        "state2": 90,
+        "state0": 95
+      },
+      "6": {
+        "state1": 26,
+        "state2": 51,
+        "state0": 188
+      },
+      "7": {
+        "state1": 23,
+        "state2": 60,
+        "state0": 34
+      },
+      "8": {
+        "state1": 25,
+        "state2": 63,
+        "state0": 104
+      },
+      "9": {
+        "state1": 33,
+        "state2": 62,
+        "state0": 45
+      },
+      "10": {
+        "state1": 18,
+        "state2": 51,
+        "state0": 122
+      },
+      "11": {
+        "state1": 29,
+        "state2": 57,
+        "state0": 89
+      }
+    },
+    "command": [
+      "taskset",
+      "-c",
+      "0-1,6-11",
+      "perf",
+      "record",
+      "-e",
+      "arm_spe_0/load_filter=1,store_filter=1,min_latency=0/u",
+      "-c",
+      "20000",
+      "-o",
+      "<workspace>/cpu-pm-multicore-20260926-150354/task-burst-2.data",
+      "--",
+      "taskset",
+      "-c",
+      "0-1,6-11",
+      "python3",
+      "<workspace>/spe-multicore-workload.py",
+      "burst"
+    ],
+    "trace_complete": [
+      "# entries-in-buffer/entries-written: 5794/5794   #P:12"
+    ]
+  },
+  {
+    "case": "system-burst-mixed",
+    "mode": "system",
+    "workload": "burst",
+    "mixed": true,
+    "record_exit": 0,
+    "decode_exit": 0,
+    "total_samples": 68100,
+    "per_cpu": {
+      "0": 8417,
+      "1": 7767,
+      "6": 7934,
+      "7": 7959,
+      "8": 9252,
+      "9": 7574,
+      "10": 10652,
+      "11": 8545
+    },
+    "unexpected_cpus": {},
+    "idle_delta": {
+      "0": {
+        "state1": 53,
+        "state2": 246,
+        "state0": 114
+      },
+      "1": {
+        "state1": 31,
+        "state2": 64,
+        "state0": 184
+      },
+      "6": {
+        "state1": 14,
+        "state2": 47,
+        "state0": 201
+      },
+      "7": {
+        "state1": 28,
+        "state2": 96,
+        "state0": 65
+      },
+      "8": {
+        "state1": 8,
+        "state2": 90,
+        "state0": 35
+      },
+      "9": {
+        "state1": 25,
+        "state2": 53,
+        "state0": 65
+      },
+      "10": {
+        "state1": 9,
+        "state2": 64,
+        "state0": 75
+      },
+      "11": {
+        "state1": 24,
+        "state2": 60,
+        "state0": 86
+      }
+    },
+    "command": [
+      "perf",
+      "record",
+      "-a",
+      "-C",
+      "0-1,6-11",
+      "-e",
+      "arm_spe_0/load_filter=1,store_filter=1,min_latency=0/u",
+      "-c",
+      "20000",
+      "-o",
+      "<workspace>/cpu-pm-multicore-20260926-150354/system-burst-mixed.data",
+      "--",
+      "taskset",
+      "-c",
+      "0-1,6-11",
+      "python3",
+      "<workspace>/spe-multicore-workload.py",
+      "burst"
+    ],
+    "trace_complete": [
+      "# entries-in-buffer/entries-written: 6391/6391   #P:12"
+    ]
+  },
+  {
+    "case": "task-burst-mixed",
+    "mode": "task",
+    "workload": "burst",
+    "mixed": true,
+    "record_exit": 0,
+    "decode_exit": 0,
+    "total_samples": 65180,
+    "per_cpu": {
+      "0": 8143,
+      "1": 8523,
+      "6": 7903,
+      "7": 7969,
+      "8": 8736,
+      "9": 7267,
+      "10": 8284,
+      "11": 8355
+    },
+    "unexpected_cpus": {},
+    "idle_delta": {
+      "0": {
+        "state1": 35,
+        "state2": 211,
+        "state0": 197
+      },
+      "1": {
+        "state1": 28,
+        "state2": 56,
+        "state0": 296
+      },
+      "6": {
+        "state1": 21,
+        "state2": 66,
+        "state0": 72
+      },
+      "7": {
+        "state1": 19,
+        "state2": 66,
+        "state0": 14
+      },
+      "8": {
+        "state1": 13,
+        "state2": 90,
+        "state0": 48
+      },
+      "9": {
+        "state1": 8,
+        "state2": 68,
+        "state0": 44
+      },
+      "10": {
+        "state1": 11,
+        "state2": 63,
+        "state0": 165
+      },
+      "11": {
+        "state1": 13,
+        "state2": 53,
+        "state0": 48
+      }
+    },
+    "command": [
+      "taskset",
+      "-c",
+      "0-1,6-11",
+      "perf",
+      "record",
+      "-e",
+      "arm_spe_0/load_filter=1,store_filter=1,min_latency=0/u",
+      "-c",
+      "20000",
+      "-o",
+      "<workspace>/cpu-pm-multicore-20260926-150354/task-burst-mixed.data",
+      "--",
+      "taskset",
+      "-c",
+      "0-1,6-11",
+      "python3",
+      "<workspace>/spe-multicore-workload.py",
+      "burst"
+    ],
+    "trace_complete": [
+      "# entries-in-buffer/entries-written: 5736/5736   #P:12"
+    ]
+  }
+]

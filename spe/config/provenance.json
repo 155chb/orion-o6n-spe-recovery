@@ -1,0 +1,24 @@
+{
+  "debian_repository": "https://salsa.debian.org/kernel-team/linux.git",
+  "debian_tag": "debian/6.12.107-1",
+  "debian_commit": "1c8550dea793986605df31b61c1d0596d877c047",
+  "source_package": "linux",
+  "source_version": "6.12.107-1",
+  "kernel_release": "6.12.107-spe-hetero",
+  "packages": [
+    "gcc 4:14.2.0-1",
+    "linux-perf 6.12.107-1",
+    "linux-source-6.12 6.12.107-1",
+    "make 4.4.1-2"
+  ],
+  "sha256": {
+    "source_tar": "5295fbf9c06bc9a6fd4868b80b5fd1e12d7d286d6d51c950a83c4c18edf0c5b3",
+    "arm_pmu_acpi.c": "e257f97a58e8756cb5696586e00e0d4a8ce732c05eb6feff33e035ecd51584f0",
+    "arm_spe_pmu.c": "f5258e504fa1db16339b0464b86734e505c1b614a3ae68bb88fa25a6463a8ba0",
+    "tested_module": "2da4249956b3f95c3b5fa06c01dd1d2995e7066d484bad0ac7f98007563330c1",
+    "kernel_image": "db54336c2c80b1eff3a12b2827bc553e03f573e4c40eeba3f326fab4c34a8391",
+    "config": "4df7e969c82c84cc70c4e1a79b6141cfdf0a1c60f8cec5ac827a1b249bca5908"
+  },
+  "patch_replay_exact": true,
+  "kernel_image_contents": "ACPI supported-CPU patch only; CPU_PM fix resides in the separately tested module"
+}
