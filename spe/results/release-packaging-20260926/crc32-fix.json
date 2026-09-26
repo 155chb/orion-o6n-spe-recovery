@@ -1,0 +1,10 @@
+{
+  "original_release": "v0.1.0-debian6.12.107-spe",
+  "failure": "SPE module load fails: decompression failed with status 6",
+  "old_xz_check": "CRC64",
+  "new_xz_check": "CRC32",
+  "uncompressed_module_unchanged": true,
+  "recompressed_module_load": "passed",
+  "spe_cpumask": "0-1,6-11",
+  "full_release_retest": "pending"
+}

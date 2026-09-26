@@ -5,7 +5,9 @@
 Orion O6N，测试 BIOS 1.2.4，Debian 13 arm64，GRUB/ACPI 启动。
 先正常安装 Debian 到 SSD 并确认原版内核能启动，保留原版内核。
 Release 为实验性 prerelease，包含旧已启动 Image、对应模块树和已验证
-CPU_PM SPE 替换模块；其组合没有作为新的默认系统重新启动验证。
+CPU_PM SPE 替换模块。v0.1.0 的 SPE 模块误用 XZ CRC64，内核报解压错误，
+不能直接用于恢复；请使用修正为 CRC32 的 v0.1.1。修正不改变模块代码，
+无需重新编译内核。完整下载、安装、启动与采样结果将分别记录。
 
 ## 校验和安装
 
@@ -70,3 +72,18 @@ initrd.img-6.12.107-spe-hetero-orion-spe12，再执行 update-grub。
 来自历史实验，名称不同；本工具不会替你清理它们。
 
 恢复包不包含用户密码、SSH key、GitHub token、machine-id 或本机 UUID。
+
+## XZ 模块打包要求
+
+该配置启用了内核模块解压，XZ 模块必须按内核构建规则使用 CRC32。
+系统 xz 和 Python lzma 的默认 CRC64 会导致内核打印
+decompression failed with status 6，即使 SHA256 和 vermagic 正确。
+
+优先使用 modules_install 的原始输出。单独压缩替换模块时使用：
+
+```sh
+xz --check=crc32 -c arm_spe_pmu.ko > arm_spe_pmu.ko.xz
+```
+
+然后重新生成内部 SHA256SUMS 和外部包校验值；不能只修改已发布
+压缩包却沿用旧校验文件。安装脚本现已在写入系统前拒绝 CRC64 SPE 模块。
