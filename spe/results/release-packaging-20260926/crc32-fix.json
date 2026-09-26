@@ -6,5 +6,5 @@
   "uncompressed_module_unchanged": true,
   "recompressed_module_load": "passed",
   "spe_cpumask": "0-1,6-11",
-  "full_release_retest": "pending"
+  "full_release_retest": "v0.1.1 fresh download/install/boot/single CPU and 10-case multicore passed"
 }

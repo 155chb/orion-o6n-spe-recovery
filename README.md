@@ -46,3 +46,11 @@ SPE 模块中。Release 恢复包将该模块放入对应模块树，源码和�
 
 推荐先阅读恢复说明，保留原版内核，并用单次启动测试。
 不需要修改固件。不能把本机 CPU 编号或 UID 映射套用到其他板卡。
+
+## 已验证的二进制恢复包
+
+[v0.1.1 Release](https://github.com/155chb/orion-o6n-spe-recovery/releases/tag/v0.1.1-debian6.12.107-spe)
+已完成本机重新下载、校验、安装、启动、单核和十项多核 SPE 验证，
+恢复时无需重新编译内核。步骤见 spe/docs/recovery.md，
+证据见 spe/results/release-v0.1.1-20260926。旧 v0.1.0 有 XZ 模块压缩格式
+错误，不应使用。仍为实验性 prerelease，长期稳定性尚未验证。

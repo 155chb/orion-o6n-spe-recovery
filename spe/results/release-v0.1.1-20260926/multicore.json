@@ -1,0 +1,652 @@
+[
+  {
+    "case": "system-busy-1",
+    "mode": "system",
+    "workload": "busy",
+    "mixed": false,
+    "record_exit": 0,
+    "decode_exit": 0,
+    "total_samples": 156413,
+    "per_cpu": {
+      "0": 19486,
+      "1": 21211,
+      "6": 19350,
+      "7": 16625,
+      "8": 18596,
+      "9": 18074,
+      "10": 22213,
+      "11": 20858
+    },
+    "unexpected_cpus": {},
+    "idle_delta": {
+      "0": {
+        "state1": 3,
+        "state2": 47,
+        "state0": 20
+      },
+      "1": {
+        "state1": 4,
+        "state2": 3,
+        "state0": 77
+      },
+      "6": {
+        "state1": 3,
+        "state2": 10,
+        "state0": 27
+      },
+      "7": {
+        "state1": 3,
+        "state2": 7,
+        "state0": 30
+      },
+      "8": {
+        "state1": 3,
+        "state2": 7,
+        "state0": 19
+      },
+      "9": {
+        "state1": 0,
+        "state2": 8,
+        "state0": 25
+      },
+      "10": {
+        "state1": 4,
+        "state2": 55,
+        "state0": 35
+      },
+      "11": {
+        "state1": 4,
+        "state2": 12,
+        "state0": 33
+      }
+    },
+    "trace_complete": [
+      "# entries-in-buffer/entries-written: 1206/1206   #P:12"
+    ]
+  },
+  {
+    "case": "task-busy-1",
+    "mode": "task",
+    "workload": "busy",
+    "mixed": false,
+    "record_exit": 0,
+    "decode_exit": 0,
+    "total_samples": 155526,
+    "per_cpu": {
+      "0": 20933,
+      "1": 20251,
+      "6": 16935,
+      "7": 18087,
+      "8": 17722,
+      "9": 17614,
+      "10": 21816,
+      "11": 22168
+    },
+    "unexpected_cpus": {},
+    "idle_delta": {
+      "0": {
+        "state1": 11,
+        "state2": 27,
+        "state0": 20
+      },
+      "1": {
+        "state1": 3,
+        "state2": 5,
+        "state0": 94
+      },
+      "6": {
+        "state1": 2,
+        "state2": 8,
+        "state0": 39
+      },
+      "7": {
+        "state1": 7,
+        "state2": 13,
+        "state0": 29
+      },
+      "8": {
+        "state1": 8,
+        "state2": 4,
+        "state0": 32
+      },
+      "9": {
+        "state1": 5,
+        "state2": 6,
+        "state0": 30
+      },
+      "10": {
+        "state1": 11,
+        "state2": 5,
+        "state0": 15
+      },
+      "11": {
+        "state1": 10,
+        "state2": 5,
+        "state0": 11
+      }
+    },
+    "trace_complete": [
+      "# entries-in-buffer/entries-written: 1283/1283   #P:12"
+    ]
+  },
+  {
+    "case": "system-burst-1",
+    "mode": "system",
+    "workload": "burst",
+    "mixed": false,
+    "record_exit": 0,
+    "decode_exit": 0,
+    "total_samples": 76266,
+    "per_cpu": {
+      "0": 8515,
+      "1": 9635,
+      "6": 10275,
+      "7": 9808,
+      "8": 10047,
+      "9": 9057,
+      "10": 9760,
+      "11": 9169
+    },
+    "unexpected_cpus": {},
+    "idle_delta": {
+      "0": {
+        "state1": 46,
+        "state2": 184,
+        "state0": 180
+      },
+      "1": {
+        "state1": 19,
+        "state2": 96,
+        "state0": 87
+      },
+      "6": {
+        "state1": 3,
+        "state2": 67,
+        "state0": 112
+      },
+      "7": {
+        "state1": 20,
+        "state2": 66,
+        "state0": 115
+      },
+      "8": {
+        "state1": 19,
+        "state2": 57,
+        "state0": 118
+      },
+      "9": {
+        "state1": 22,
+        "state2": 65,
+        "state0": 63
+      },
+      "10": {
+        "state1": 14,
+        "state2": 68,
+        "state0": 79
+      },
+      "11": {
+        "state1": 18,
+        "state2": 63,
+        "state0": 80
+      }
+    },
+    "trace_complete": [
+      "# entries-in-buffer/entries-written: 5999/5999   #P:12"
+    ]
+  },
+  {
+    "case": "task-burst-1",
+    "mode": "task",
+    "workload": "burst",
+    "mixed": false,
+    "record_exit": 0,
+    "decode_exit": 0,
+    "total_samples": 80405,
+    "per_cpu": {
+      "0": 9698,
+      "1": 9952,
+      "6": 9943,
+      "7": 10136,
+      "8": 9217,
+      "9": 10681,
+      "10": 10243,
+      "11": 10535
+    },
+    "unexpected_cpus": {},
+    "idle_delta": {
+      "0": {
+        "state1": 44,
+        "state2": 173,
+        "state0": 360
+      },
+      "1": {
+        "state1": 33,
+        "state2": 118,
+        "state0": 136
+      },
+      "6": {
+        "state1": 13,
+        "state2": 55,
+        "state0": 209
+      },
+      "7": {
+        "state1": 16,
+        "state2": 90,
+        "state0": 35
+      },
+      "8": {
+        "state1": 32,
+        "state2": 59,
+        "state0": 89
+      },
+      "9": {
+        "state1": 21,
+        "state2": 75,
+        "state0": 45
+      },
+      "10": {
+        "state1": 18,
+        "state2": 67,
+        "state0": 50
+      },
+      "11": {
+        "state1": 28,
+        "state2": 60,
+        "state0": 55
+      }
+    },
+    "trace_complete": [
+      "# entries-in-buffer/entries-written: 6397/6397   #P:12"
+    ]
+  },
+  {
+    "case": "system-busy-2",
+    "mode": "system",
+    "workload": "busy",
+    "mixed": false,
+    "record_exit": 0,
+    "decode_exit": 0,
+    "total_samples": 156367,
+    "per_cpu": {
+      "0": 20813,
+      "1": 20199,
+      "6": 18635,
+      "7": 16931,
+      "8": 17966,
+      "9": 18542,
+      "10": 22196,
+      "11": 21085
+    },
+    "unexpected_cpus": {},
+    "idle_delta": {
+      "0": {
+        "state1": 6,
+        "state2": 49,
+        "state0": 31
+      },
+      "1": {
+        "state1": 4,
+        "state2": 15,
+        "state0": 66
+      },
+      "6": {
+        "state1": 7,
+        "state2": 8,
+        "state0": 55
+      },
+      "7": {
+        "state1": 3,
+        "state2": 7,
+        "state0": 24
+      },
+      "8": {
+        "state1": 5,
+        "state2": 8,
+        "state0": 16
+      },
+      "9": {
+        "state1": 2,
+        "state2": 8,
+        "state0": 18
+      },
+      "10": {
+        "state1": 6,
+        "state2": 9,
+        "state0": 15
+      },
+      "11": {
+        "state1": 4,
+        "state2": 9,
+        "state0": 16
+      }
+    },
+    "trace_complete": [
+      "# entries-in-buffer/entries-written: 1014/1014   #P:12"
+    ]
+  },
+  {
+    "case": "task-busy-2",
+    "mode": "task",
+    "workload": "busy",
+    "mixed": false,
+    "record_exit": 0,
+    "decode_exit": 0,
+    "total_samples": 156221,
+    "per_cpu": {
+      "0": 20915,
+      "1": 21216,
+      "6": 18794,
+      "7": 17019,
+      "8": 16719,
+      "9": 17703,
+      "10": 22278,
+      "11": 21577
+    },
+    "unexpected_cpus": {},
+    "idle_delta": {
+      "0": {
+        "state1": 9,
+        "state2": 22,
+        "state0": 16
+      },
+      "1": {
+        "state1": 8,
+        "state2": 2,
+        "state0": 93
+      },
+      "6": {
+        "state1": 4,
+        "state2": 4,
+        "state0": 51
+      },
+      "7": {
+        "state1": 9,
+        "state2": 6,
+        "state0": 25
+      },
+      "8": {
+        "state1": 7,
+        "state2": 7,
+        "state0": 33
+      },
+      "9": {
+        "state1": 11,
+        "state2": 6,
+        "state0": 15
+      },
+      "10": {
+        "state1": 14,
+        "state2": 6,
+        "state0": 14
+      },
+      "11": {
+        "state1": 6,
+        "state2": 5,
+        "state0": 13
+      }
+    },
+    "trace_complete": [
+      "# entries-in-buffer/entries-written: 1213/1213   #P:12"
+    ]
+  },
+  {
+    "case": "system-burst-2",
+    "mode": "system",
+    "workload": "burst",
+    "mixed": false,
+    "record_exit": 0,
+    "decode_exit": 0,
+    "total_samples": 79454,
+    "per_cpu": {
+      "0": 9598,
+      "1": 9413,
+      "6": 10744,
+      "7": 10373,
+      "8": 9736,
+      "9": 9789,
+      "10": 9727,
+      "11": 10074
+    },
+    "unexpected_cpus": {},
+    "idle_delta": {
+      "0": {
+        "state1": 47,
+        "state2": 252,
+        "state0": 48
+      },
+      "1": {
+        "state1": 23,
+        "state2": 94,
+        "state0": 175
+      },
+      "6": {
+        "state1": 23,
+        "state2": 56,
+        "state0": 154
+      },
+      "7": {
+        "state1": 11,
+        "state2": 76,
+        "state0": 35
+      },
+      "8": {
+        "state1": 11,
+        "state2": 71,
+        "state0": 31
+      },
+      "9": {
+        "state1": 21,
+        "state2": 63,
+        "state0": 85
+      },
+      "10": {
+        "state1": 26,
+        "state2": 52,
+        "state0": 126
+      },
+      "11": {
+        "state1": 14,
+        "state2": 66,
+        "state0": 39
+      }
+    },
+    "trace_complete": [
+      "# entries-in-buffer/entries-written: 6186/6186   #P:12"
+    ]
+  },
+  {
+    "case": "task-burst-2",
+    "mode": "task",
+    "workload": "burst",
+    "mixed": false,
+    "record_exit": 0,
+    "decode_exit": 0,
+    "total_samples": 84888,
+    "per_cpu": {
+      "0": 10990,
+      "1": 10704,
+      "6": 11289,
+      "7": 9719,
+      "8": 11007,
+      "9": 10809,
+      "10": 10029,
+      "11": 10341
+    },
+    "unexpected_cpus": {},
+    "idle_delta": {
+      "0": {
+        "state1": 44,
+        "state2": 134,
+        "state0": 479
+      },
+      "1": {
+        "state1": 21,
+        "state2": 120,
+        "state0": 180
+      },
+      "6": {
+        "state1": 11,
+        "state2": 69,
+        "state0": 99
+      },
+      "7": {
+        "state1": 5,
+        "state2": 69,
+        "state0": 62
+      },
+      "8": {
+        "state1": 15,
+        "state2": 65,
+        "state0": 96
+      },
+      "9": {
+        "state1": 3,
+        "state2": 67,
+        "state0": 23
+      },
+      "10": {
+        "state1": 16,
+        "state2": 64,
+        "state0": 44
+      },
+      "11": {
+        "state1": 13,
+        "state2": 63,
+        "state0": 36
+      }
+    },
+    "trace_complete": [
+      "# entries-in-buffer/entries-written: 6179/6179   #P:12"
+    ]
+  },
+  {
+    "case": "system-burst-mixed",
+    "mode": "system",
+    "workload": "burst",
+    "mixed": true,
+    "record_exit": 0,
+    "decode_exit": 0,
+    "total_samples": 68813,
+    "per_cpu": {
+      "0": 8488,
+      "1": 9304,
+      "6": 7835,
+      "7": 8631,
+      "8": 9502,
+      "9": 8202,
+      "10": 8177,
+      "11": 8674
+    },
+    "unexpected_cpus": {},
+    "idle_delta": {
+      "0": {
+        "state1": 65,
+        "state2": 272,
+        "state0": 115
+      },
+      "1": {
+        "state1": 34,
+        "state2": 114,
+        "state0": 84
+      },
+      "6": {
+        "state1": 16,
+        "state2": 96,
+        "state0": 101
+      },
+      "7": {
+        "state1": 11,
+        "state2": 34,
+        "state0": 230
+      },
+      "8": {
+        "state1": 3,
+        "state2": 62,
+        "state0": 51
+      },
+      "9": {
+        "state1": 8,
+        "state2": 63,
+        "state0": 26
+      },
+      "10": {
+        "state1": 13,
+        "state2": 65,
+        "state0": 17
+      },
+      "11": {
+        "state1": 9,
+        "state2": 49,
+        "state0": 138
+      }
+    },
+    "trace_complete": [
+      "# entries-in-buffer/entries-written: 6469/6469   #P:12"
+    ]
+  },
+  {
+    "case": "task-burst-mixed",
+    "mode": "task",
+    "workload": "burst",
+    "mixed": true,
+    "record_exit": 0,
+    "decode_exit": 0,
+    "total_samples": 65225,
+    "per_cpu": {
+      "0": 8397,
+      "1": 7475,
+      "6": 7822,
+      "7": 8271,
+      "8": 8246,
+      "9": 7698,
+      "10": 9093,
+      "11": 8223
+    },
+    "unexpected_cpus": {},
+    "idle_delta": {
+      "0": {
+        "state1": 46,
+        "state2": 206,
+        "state0": 279
+      },
+      "1": {
+        "state1": 18,
+        "state2": 89,
+        "state0": 192
+      },
+      "6": {
+        "state1": 24,
+        "state2": 78,
+        "state0": 250
+      },
+      "7": {
+        "state1": 29,
+        "state2": 59,
+        "state0": 74
+      },
+      "8": {
+        "state1": 22,
+        "state2": 65,
+        "state0": 27
+      },
+      "9": {
+        "state1": 27,
+        "state2": 90,
+        "state0": 30
+      },
+      "10": {
+        "state1": 19,
+        "state2": 86,
+        "state0": 201
+      },
+      "11": {
+        "state1": 18,
+        "state2": 37,
+        "state0": 155
+      }
+    },
+    "trace_complete": [
+      "# entries-in-buffer/entries-written: 6663/6663   #P:12"
+    ]
+  }
+]

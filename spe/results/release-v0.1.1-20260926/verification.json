@@ -1,0 +1,63 @@
+{
+  "download": {
+    "tag": "v0.1.1-debian6.12.107-spe",
+    "download_source": "GitHub Release assets, fresh directory",
+    "sha256_archive": "d8d27a4342ff90012156953bf26155b808de3e220d563b4e4cd9d069ab928961",
+    "internal_checksums": "passed",
+    "xz_check": "CRC32"
+  },
+  "install": {
+    "success": true,
+    "tag": "v0.1.1-debian6.12.107-spe",
+    "scripts": "downloaded from same GitHub tag",
+    "end": 1790419393.2906125
+  },
+  "boot": {
+    "tag": "v0.1.1-debian6.12.107-spe",
+    "running_kernel": "6.12.107-spe-hetero",
+    "kernel_matches_download": true,
+    "module_matches_download": true,
+    "image_sha256": "db54336c2c80b1eff3a12b2827bc553e03f573e4c40eeba3f326fab4c34a8391",
+    "online": "0-11",
+    "mask": "0-1,6-11"
+  },
+  "single_cpu": [
+    {
+      "mode": "system",
+      "samples_by_cpu": {
+        "6": 122937
+      }
+    },
+    {
+      "mode": "task",
+      "samples_by_cpu": {
+        "6": 94738
+      }
+    }
+  ],
+  "cleanup": {
+    "idle_unchanged": true,
+    "installed_module_restored": true
+  },
+  "multicore_cases": 10,
+  "all_cases_passed": true,
+  "module_source": "decompressed downloaded v0.1.1 module; no local build products",
+  "test_source": "scripts downloaded from v0.1.1 tag",
+  "compilation_required": false,
+  "deep_idle_state2_usage_delta": {
+    "system-busy-1": 149,
+    "task-busy-1": 73,
+    "system-burst-1": 666,
+    "task-burst-1": 697,
+    "system-busy-2": 113,
+    "task-busy-2": 58,
+    "system-burst-2": 730,
+    "task-burst-2": 651,
+    "system-burst-mixed": 755,
+    "task-burst-mixed": 710
+  },
+  "limitations": [
+    "Short sampling matrix; no long-term stability, hotplug or suspend validation",
+    "Expected unsigned-module signature warning/taint; no sampling Oops, BUG, WARNING, panic or XZ decompression failure observed"
+  ]
+}

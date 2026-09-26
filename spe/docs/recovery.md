@@ -7,16 +7,31 @@ Orion O6N，测试 BIOS 1.2.4，Debian 13 arm64，GRUB/ACPI 启动。
 Release 为实验性 prerelease，包含旧已启动 Image、对应模块树和已验证
 CPU_PM SPE 替换模块。v0.1.0 的 SPE 模块误用 XZ CRC64，内核报解压错误，
 不能直接用于恢复；请使用修正为 CRC32 的 v0.1.1。修正不改变模块代码，
-无需重新编译内核。完整下载、安装、启动与采样结果将分别记录。
+无需重新编译内核。2026-09-26 已完成 GitHub 重新下载、校验、安装、启动及采样验证，
+单 A720 两种采样和十项多核测试全部通过，过程无需编译。
+记录见 spe/results/release-v0.1.1-20260926。
 
 ## 校验和安装
 
-下载 Release 的恢复 tar.gz 和同名 .sha256 文件：
+下载 v0.1.1 Release 的恢复 tar.gz 和同名 .sha256 文件：
 
 ```sh
-sha256sum -c orion-o6n-spe-6.12.107-tested.tar.gz.sha256
-tar -xzf orion-o6n-spe-6.12.107-tested.tar.gz
-sudo python3 spe/tools/install-bundle.py orion-o6n-spe-6.12.107-tested
+gh release download v0.1.1-debian6.12.107-spe --repo 155chb/orion-o6n-spe-recovery --pattern "*.tar.gz*"
+```
+
+将本仓库切换到 Release 标签，使用同版本安装脚本：
+
+```sh
+git fetch origin tag v0.1.1-debian6.12.107-spe
+git switch --detach v0.1.1-debian6.12.107-spe
+```
+
+随后校验并安装：
+
+```sh
+sha256sum -c orion-o6n-spe-6.12.107-crc32.tar.gz.sha256
+tar -xzf orion-o6n-spe-6.12.107-crc32.tar.gz
+sudo python3 spe/tools/install-bundle.py orion-o6n-spe-6.12.107-crc32
 ```
 
 脚本核对内部 SHA256，拒绝覆盖已存在的同名内核/模块树，然后安装
