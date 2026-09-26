@@ -1,0 +1,8 @@
+/local-build*/
+/local-results*/
+/releases/
+*.data
+*.decoded
+*.tar.gz
+*.img
+__pycache__/
