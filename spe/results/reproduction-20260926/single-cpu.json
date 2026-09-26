@@ -1,0 +1,14 @@
+[
+  {
+    "mode": "system",
+    "samples_by_cpu": {
+      "6": 124846
+    }
+  },
+  {
+    "mode": "task",
+    "samples_by_cpu": {
+      "6": 116667
+    }
+  }
+]

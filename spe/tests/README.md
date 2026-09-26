@@ -1,9 +1,11 @@
 # Multicore validation
 
 The workload and validation runner originate from the successful 10-case matrix.
-The runner now accepts the replacement module and output directory via environment
-variables, instead of a user-specific workspace path. Only this path adaptation is
-new; historical results describe the original run, not a rerun of these wrappers.
+The runner accepts the replacement module and output directory via environment
+variables. On 2026-09-26 it was rerun successfully on a fresh GitHub-only full build,
+after installing and booting that build. See spe/results/reproduction-20260926.
+The runner temporarily loads the uncompressed build module; this can produce an
+expected unsigned-module warning, then cleanup reloads the installed module.
 
 Run on the custom 6.12.107-spe-hetero kernel with the MADT override active:
 
