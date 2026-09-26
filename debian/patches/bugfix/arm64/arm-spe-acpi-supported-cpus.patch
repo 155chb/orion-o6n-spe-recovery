@@ -1,0 +1,117 @@
+From: Cai Hongbo <127642038+155chb@users.noreply.github.com>
+Subject: perf/arm_spe: derive supported CPUs from nonzero MADT SPE GSIVs
+Origin: other, local Orion O6N development
+Forwarded: not-needed
+Last-Update: 2026-09-26
+
+Build one SPE CPU mask from MADT GICC entries. Ignore zero GSIVs, reject mismatched nonzero GSIVs, and intersect IRQ affinity with the ACPI mask. This prevents registration from rejecting a mixed A720/A520 system and prevents unsupported CPUs from accessing SPE. The driver contains no Orion CPU-number constant; the board firmware override is separate. This supports one SPE interrupt and assumes compatible SPE features on the selected CPUs; it is not a general multi-PMU heterogeneous implementation.
+
+--- a/drivers/perf/arm_pmu_acpi.c
++++ b/drivers/perf/arm_pmu_acpi.c
+@@ -126,6 +126,8 @@
+ }
+ 
+ #if IS_ENABLED(CONFIG_ARM_SPE_PMU)
++static cpumask_t spe_acpi_cpus;
++
+ static struct resource spe_resources[] = {
+ 	{
+ 		/* irq */
+@@ -136,26 +138,58 @@
+ static struct platform_device spe_dev = {
+ 	.name = ARMV8_SPE_PDEV_NAME,
+ 	.id = -1,
++	.dev = { .platform_data = &spe_acpi_cpus },
+ 	.resource = spe_resources,
+ 	.num_resources = ARRAY_SIZE(spe_resources)
+ };
+ 
+-static u16 arm_spe_parse_gsi(struct acpi_madt_generic_interrupt *gicc)
+-{
+-	return gicc->spe_interrupt;
+-}
+-
+ /*
+- * For lack of a better place, hook the normal PMU MADT walk
+- * and create a SPE device if we detect a recent MADT with
+- * a homogeneous PPI mapping.
++ * The MADT may describe SPE only on a subset of CPUs.  A zero SPE GSIV
++ * means that CPU must never be given an SPE event or a management PPI.
+  */
+ static void arm_spe_acpi_register_device(void)
+ {
+-	int ret = arm_acpi_register_pmu_device(&spe_dev, ACPI_MADT_GICC_SPE,
+-					       arm_spe_parse_gsi);
+-	if (ret)
+-		pr_warn("ACPI: SPE: Unable to register device\n");
++	struct acpi_madt_generic_interrupt *gicc;
++	u16 gsi = 0, this_gsi;
++	int cpu, irq, ret;
++
++	cpumask_clear(&spe_acpi_cpus);
++	for_each_possible_cpu(cpu) {
++		gicc = acpi_cpu_get_madt_gicc(cpu);
++		if (!gicc || gicc->header.length < ACPI_MADT_GICC_SPE)
++			continue;
++
++		this_gsi = gicc->spe_interrupt;
++		if (!this_gsi)
++			continue;
++		if (gsi && gsi != this_gsi) {
++			pr_warn("ACPI: SPE: multiple GSIVs (%u and %u) unsupported\n",
++				gsi, this_gsi);
++			return;
++		}
++
++		gsi = this_gsi;
++		cpumask_set_cpu(cpu, &spe_acpi_cpus);
++	}
++	if (cpumask_empty(&spe_acpi_cpus))
++		return;
++
++	irq = acpi_register_gsi(NULL, gsi, ACPI_LEVEL_SENSITIVE,
++				ACPI_ACTIVE_HIGH);
++	if (irq < 0) {
++		pr_warn("ACPI: SPE: unable to register GSIV %u: %d\n", gsi, irq);
++		return;
++	}
++
++	spe_resources[0].start = irq;
++	ret = platform_device_register(&spe_dev);
++	if (ret) {
++		pr_warn("ACPI: SPE: unable to register device: %d\n", ret);
++		acpi_unregister_gsi(gsi);
++		return;
++	}
++	pr_info("ACPI: SPE: GSIV %u applies to CPUs %*pbl\n",
++		gsi, cpumask_pr_args(&spe_acpi_cpus));
+ }
+ #else
+ static inline void arm_spe_acpi_register_device(void)
+--- a/drivers/perf/arm_spe_pmu.c
++++ b/drivers/perf/arm_spe_pmu.c
+@@ -1192,6 +1192,7 @@
+ static int arm_spe_pmu_irq_probe(struct arm_spe_pmu *spe_pmu)
+ {
+ 	struct platform_device *pdev = spe_pmu->pdev;
++	const cpumask_t *acpi_cpus = dev_get_platdata(&pdev->dev);
+ 	int irq = platform_get_irq(pdev, 0);
+ 
+ 	if (irq < 0)
+@@ -1205,6 +1206,16 @@
+ 	if (irq_get_percpu_devid_partition(irq, &spe_pmu->supported_cpus)) {
+ 		dev_err(&pdev->dev, "failed to get PPI partition (%d)\n", irq);
+ 		return -EINVAL;
++	}
++
++	/* ACPI GICC SPE GSIVs may cover only part of the PPI partition. */
++	if (acpi_cpus) {
++		cpumask_and(&spe_pmu->supported_cpus,
++			    &spe_pmu->supported_cpus, acpi_cpus);
++		if (cpumask_empty(&spe_pmu->supported_cpus)) {
++			dev_err(&pdev->dev, "no SPE CPUs in PPI partition\n");
++			return -ENODEV;
++		}
+ 	}
+ 
+ 	spe_pmu->irq = irq;

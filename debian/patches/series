@@ -112,3 +112,5 @@ bugfix/all/libbpf-use-the-standard-fixdep-build-rule.patch
 bugfix/all/tools-hv-Make-the-sample-hv_get_dhcp_info-script-mor.patch
 
 # ABI maintenance
+
+bugfix/arm64/arm-spe-acpi-supported-cpus.patch
