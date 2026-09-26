@@ -22,7 +22,7 @@ SPE 补丁，不能再次重复应用完整 Debian series。
 ```sh
 sudo apt update
 sudo apt install git build-essential bc bison flex libssl-dev libelf-dev \
-  dwarves rsync cpio kmod xz-utils python3 gcc-arm-linux-gnueabihf \
+  dwarves rsync cpio kmod xz-utils python3 patch gcc-arm-linux-gnueabihf \
   linux-source-6.12=6.12.107-1
 ```
 
@@ -63,3 +63,27 @@ make -C /absolute/new-spe-build/linux-source-6.12 \
 
 不要用 M=drivers/perf 替代，该方式会按外部模块路径处理。
 本仓库 Release 是带校验的手工恢复包，不是 Debian 官方 .deb。
+
+## 将本次完整构建打包
+
+编译成功后，生成只包含本次 Image 和本次完整模块树的安装目录：
+
+```sh
+./spe/tools/bundle-build.sh /absolute/new-spe-build /absolute/new-spe-bundle
+sudo python3 spe/tools/install-bundle.py /absolute/new-spe-bundle
+```
+
+打包脚本执行 modules_install 到新目录，剥离调试符号并按构建配置签名/
+压缩模块，移除指向构建源码的链接，生成逐文件 SHA256SUMS；不会安装到
+运行中的系统。打包也可能需要数分钟。
+
+安装脚本拒绝同名内核已存在的情况。已有实验内核时，先启动原版 Debian，
+将 /lib/modules/6.12.107-spe-hetero 和 /boot 下同版本的 vmlinuz、config、
+System.map、initrd.img（包括带实验后缀的 initrd）移到一个独立备份目录，
+记录原路径。不要修改原版 Debian 文件。再运行安装脚本和 recovery.md
+中的 prepare-boot.py，采用单次启动；旧 GRUB 实验项在备份文件移走后暂时
+不可用，原版 Debian 始终可用。回退旧实验版本时须在原版内核中恢复全部
+对应文件和整个模块树，不能混用两个构建的模块。
+
+打包、安装成功不等于启动或 SPE 验证成功。首次先验证一个 A720，再运行
+多核测试，并分别记录构建、启动、采样的结果。

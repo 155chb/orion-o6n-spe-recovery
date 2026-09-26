@@ -11,7 +11,9 @@ mods=Path('/lib/modules')/k
 files=[(b/'boot'/name,Path('/boot')/name) for name in ['vmlinuz-'+k,'config-'+k,'System.map-'+k]]
 if mods.exists() or any(dst.exists() for _,dst in files):raise SystemExit('Kernel paths already exist; refusing to replace a running/tested installation')
 if not (b/'lib/modules'/k).is_dir():raise SystemExit('Module tree missing')
-ver=subprocess.check_output(['modinfo','-F','vermagic',str(b/'lib/modules'/k/'kernel/drivers/perf/arm_spe_pmu.ko.xz')],text=True).split()[0]
+candidates=[f for f in (b/'lib/modules'/k/'kernel/drivers/perf').glob('arm_spe_pmu.ko*') if f.name in {'arm_spe_pmu.ko','arm_spe_pmu.ko.xz','arm_spe_pmu.ko.gz','arm_spe_pmu.ko.zst'}]
+if len(candidates)!=1:raise SystemExit('Expected exactly one SPE module')
+ver=subprocess.check_output(['modinfo','-F','vermagic',str(candidates[0])],text=True).split()[0]
 if ver!=k:raise SystemExit('Module release mismatch')
 shutil.copytree(b/'lib/modules'/k,mods,symlinks=True)
 for src,dst in files:shutil.copy2(src,dst);dst.chmod(0o644)
