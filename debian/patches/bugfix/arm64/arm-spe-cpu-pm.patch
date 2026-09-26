@@ -1,0 +1,161 @@
+From: Cai Hongbo <127642038+155chb@users.noreply.github.com>
+Subject: perf/arm_spe: stop and restore active events across CPU power transitions
+Origin: other, local Orion O6N development
+Forwarded: not-needed
+Last-Update: 2026-09-26
+
+Track the scheduled event per CPU. On CPU_PM_ENTER, stop an active event and commit its AUX position. On EXIT or ENTER_FAILED, reset local SPE registers and restart only the previously active event. Check the supported CPU mask before every notifier register access. Register and unregister the notifier with the PMU lifecycle. This fixes CPU-wide recording remaining active across context-losing idle while firmware restores invalid SPE register contents. Task recording often avoided the failure through scheduler stop/start callbacks.
+
+--- a/drivers/perf/arm_spe_pmu.c
++++ b/drivers/perf/arm_spe_pmu.c
+@@ -17,6 +17,7 @@
+ #include <linux/bug.h>
+ #include <linux/capability.h>
+ #include <linux/cpuhotplug.h>
++#include <linux/cpu_pm.h>
+ #include <linux/cpumask.h>
+ #include <linux/device.h>
+ #include <linux/errno.h>
+@@ -67,6 +68,11 @@
+ 	void					*base;
+ };
+ 
++struct arm_spe_cpu_state {
++	struct perf_event *event;
++	bool resume;
++};
++
+ struct arm_spe_pmu {
+ 	struct pmu				pmu;
+ 	struct platform_device			*pdev;
+@@ -91,6 +97,8 @@
+ 	u16					max_record_sz;
+ 	u16					align;
+ 	struct perf_output_handle __percpu	*handle;
++	struct arm_spe_cpu_state __percpu	*cpu_state;
++	struct notifier_block			cpu_pm_nb;
+ };
+ 
+ #define to_spe_pmu(p) (container_of(p, struct arm_spe_pmu, pmu))
+@@ -848,12 +856,16 @@
+ 	if (!cpumask_test_cpu(cpu, &spe_pmu->supported_cpus))
+ 		return -ENOENT;
+ 
++	this_cpu_ptr(spe_pmu->cpu_state)->event = event;
++	this_cpu_ptr(spe_pmu->cpu_state)->resume = false;
+ 	hwc->state = PERF_HES_UPTODATE | PERF_HES_STOPPED;
+ 
+ 	if (flags & PERF_EF_START) {
+ 		arm_spe_pmu_start(event, PERF_EF_RELOAD);
+-		if (hwc->state & PERF_HES_STOPPED)
++		if (hwc->state & PERF_HES_STOPPED) {
++			this_cpu_ptr(spe_pmu->cpu_state)->event = NULL;
+ 			ret = -EINVAL;
++		}
+ 	}
+ 
+ 	return ret;
+@@ -861,7 +873,12 @@
+ 
+ static void arm_spe_pmu_del(struct perf_event *event, int flags)
+ {
++	struct arm_spe_pmu *spe_pmu = to_spe_pmu(event->pmu);
++	struct arm_spe_cpu_state *state = this_cpu_ptr(spe_pmu->cpu_state);
++
+ 	arm_spe_pmu_stop(event, PERF_EF_UPDATE);
++	state->event = NULL;
++	state->resume = false;
+ }
+ 
+ static void arm_spe_pmu_read(struct perf_event *event)
+@@ -1113,6 +1130,42 @@
+ 	isb();
+ }
+ 
++/* Keep AUX accounting valid across CPU context-losing idle states. */
++static int arm_spe_cpu_pm_notify(struct notifier_block *nb,
++			       unsigned long cmd, void *unused)
++{
++	struct arm_spe_pmu *spe_pmu = container_of(nb, struct arm_spe_pmu, cpu_pm_nb);
++	struct arm_spe_cpu_state *state;
++	struct perf_event *event;
++
++	/* A520 CPUs must never access SPE registers. */
++	if (!cpumask_test_cpu(smp_processor_id(), &spe_pmu->supported_cpus))
++		return NOTIFY_DONE;
++
++	state = this_cpu_ptr(spe_pmu->cpu_state);
++	event = state->event;
++
++	switch (cmd) {
++	case CPU_PM_ENTER:
++		state->resume = event && !(event->hw.state & PERF_HES_STOPPED);
++		if (state->resume)
++			arm_spe_pmu_stop(event, PERF_EF_UPDATE);
++		break;
++	case CPU_PM_EXIT:
++	case CPU_PM_ENTER_FAILED:
++		/* Firmware may have restored invalid buffer/control registers. */
++		__arm_spe_pmu_reset_local();
++		if (state->resume && event)
++			arm_spe_pmu_start(event, PERF_EF_RELOAD);
++		state->resume = false;
++		break;
++	default:
++		return NOTIFY_DONE;
++	}
++
++	return NOTIFY_OK;
++}
++
+ static void __arm_spe_pmu_setup_one(void *info)
+ {
+ 	struct arm_spe_pmu *spe_pmu = info;
+@@ -1257,6 +1310,12 @@
+ 	if (!spe_pmu->handle)
+ 		return -ENOMEM;
+ 
++	spe_pmu->cpu_state = alloc_percpu(struct arm_spe_cpu_state);
++	if (!spe_pmu->cpu_state) {
++		ret = -ENOMEM;
++		goto out_free_handle;
++	}
++
+ 	spe_pmu->pdev = pdev;
+ 	platform_set_drvdata(pdev, spe_pmu);
+ 
+@@ -1268,15 +1327,23 @@
+ 	if (ret)
+ 		goto out_free_handle;
+ 
++	spe_pmu->cpu_pm_nb.notifier_call = arm_spe_cpu_pm_notify;
++	ret = cpu_pm_register_notifier(&spe_pmu->cpu_pm_nb);
++	if (ret)
++		goto out_teardown_dev;
++
+ 	ret = arm_spe_pmu_perf_init(spe_pmu);
+ 	if (ret)
+-		goto out_teardown_dev;
++		goto out_unregister_cpu_pm;
+ 
+ 	return 0;
+ 
++out_unregister_cpu_pm:
++	cpu_pm_unregister_notifier(&spe_pmu->cpu_pm_nb);
+ out_teardown_dev:
+ 	arm_spe_pmu_dev_teardown(spe_pmu);
+ out_free_handle:
++	free_percpu(spe_pmu->cpu_state);
+ 	free_percpu(spe_pmu->handle);
+ 	return ret;
+ }
+@@ -1286,7 +1353,9 @@
+ 	struct arm_spe_pmu *spe_pmu = platform_get_drvdata(pdev);
+ 
+ 	arm_spe_pmu_perf_destroy(spe_pmu);
++	cpu_pm_unregister_notifier(&spe_pmu->cpu_pm_nb);
+ 	arm_spe_pmu_dev_teardown(spe_pmu);
++	free_percpu(spe_pmu->cpu_state);
+ 	free_percpu(spe_pmu->handle);
+ }
+ 
