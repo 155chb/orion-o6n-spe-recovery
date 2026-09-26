@@ -116,3 +116,5 @@ bugfix/all/tools-hv-Make-the-sample-hv_get_dhcp_info-script-mor.patch
 bugfix/arm64/arm-spe-acpi-supported-cpus.patch
 
 bugfix/arm64/arm-spe-cpu-pm.patch
+
+bugfix/arm64/arm-spe-diagnostic-readback.patch

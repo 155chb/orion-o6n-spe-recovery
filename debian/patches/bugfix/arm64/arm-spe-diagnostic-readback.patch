@@ -1,0 +1,65 @@
+From: Cai Hongbo <127642038+155chb@users.noreply.github.com>
+Subject: perf/arm_spe: retain optional register diagnostics used during validation
+Origin: other, local Orion O6N development
+Forwarded: not-needed
+Last-Update: 2026-09-26
+
+Preserve the exact module source used for successful single-CPU and multicore tests. spe_diag defaults to false. When enabled, log buffer/control register readback and whether the first AUX page contains data. Also retain the two unconditional ISBs introduced with diagnostics; these are part of the tested artifact even with logging disabled. Diagnostic logging changes timing and first-page inspection does not decode records. This patch is an experimental instrumentation aid, not a claim of an upstream-ready fix.
+
+--- a/drivers/perf/arm_spe_pmu.c
++++ b/drivers/perf/arm_spe_pmu.c
+@@ -507,6 +507,25 @@
+ 	return limit;
+ }
+ 
++/* Temporary observation only: no SPE register writes are changed. */
++static bool spe_diag;
++module_param(spe_diag, bool, 0600);
++MODULE_PARM_DESC(spe_diag, "Log SPE register readback at begin/start/end");
++
++static void arm_spe_diag_regs(const char *stage, u64 base, u64 expected)
++{
++    if (!spe_diag)
++        return;
++    pr_info_ratelimited("SPE_DIAG %s CPU%d base=%016llx expected=%016llx ptr=%016llx limit=%016llx status=%016llx\n",
++        stage, smp_processor_id(), base, expected,
++        read_sysreg_s(SYS_PMBPTR_EL1), read_sysreg_s(SYS_PMBLIMITR_EL1),
++        read_sysreg_s(SYS_PMBSR_EL1));
++    pr_info_ratelimited("SPE_DIAG %s ctrl=%016llx filter=%016llx interval=%016llx count=%016llx pmsidr=%016llx pmbidr=%016llx\n",
++        stage, read_sysreg_s(SYS_PMSCR_EL1), read_sysreg_s(SYS_PMSFCR_EL1),
++        read_sysreg_s(SYS_PMSIRR_EL1), read_sysreg_s(SYS_PMSICR_EL1),
++        read_sysreg_s(SYS_PMSIDR_EL1), read_sysreg_s(SYS_PMBIDR_EL1));
++}
++
+ static int arm_spe_perf_aux_output_begin(struct perf_output_handle *handle,
+ 					 struct perf_event *event)
+ {
+@@ -535,6 +554,9 @@
+ 
+ out_write_limit:
+ 	write_sysreg_s(limit, SYS_PMBLIMITR_EL1);
++	isb();
++	if (buf)
++		arm_spe_diag_regs("begin", (u64)buf->base, base);
+ 	return (limit & PMBLIMITR_EL1_E) ? 0 : -EIO;
+ }
+ 
+@@ -543,6 +565,9 @@
+ 	struct arm_spe_pmu_buf *buf = perf_get_aux(handle);
+ 	u64 offset, size;
+ 
++	arm_spe_diag_regs("end", (u64)buf->base, (u64)buf->base + PERF_IDX2OFF(handle->head, buf));
++	if (spe_diag)
++		pr_info_ratelimited("SPE_DIAG end first-page-nonzero=%d head=%016llx pages=%d\n", !!memchr_inv(buf->base, 0, PAGE_SIZE), (u64)handle->head, buf->nr_pages);
+ 	offset = read_sysreg_s(SYS_PMBPTR_EL1) - (u64)buf->base;
+ 	size = offset - PERF_IDX2OFF(handle->head, buf);
+ 
+@@ -803,6 +828,8 @@
+ 	reg = arm_spe_event_to_pmscr(event);
+ 	isb();
+ 	write_sysreg_s(reg, SYS_PMSCR_EL1);
++	isb();
++	arm_spe_diag_regs("start", 0, 0);
+ }
+ 
+ static void arm_spe_pmu_stop(struct perf_event *event, int flags)
